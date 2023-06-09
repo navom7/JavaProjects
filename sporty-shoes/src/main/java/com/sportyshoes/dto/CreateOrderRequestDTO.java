@@ -12,19 +12,30 @@ public class CreateOrderRequestDTO {
 
     private String shoename;
 
+    private String password;
+
     public CreateOrderRequestDTO() {
     }
 
-    public CreateOrderRequestDTO(Long orderid, Long userid, Long shoeid, String username, String shoename) {
+    public CreateOrderRequestDTO(Long orderid, Long userid, Long shoeid, String username, String shoename, String password) {
         this.orderid = orderid;
         this.userid = userid;
         this.shoeid = shoeid;
         this.username = username;
         this.shoename = shoename;
+        this.password = password;
     }
 
     public Long getOrderid() {
         return orderid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setOrderid(Long orderid) {

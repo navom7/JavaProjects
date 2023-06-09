@@ -2,12 +2,12 @@ package com.sportyshoes.entity;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "shoes")
-public class Shoes {
+public class Shoe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shoeid")
@@ -23,16 +23,35 @@ public class Shoes {
     private Long price;
 
     @OneToMany(mappedBy = "shoes", cascade = CascadeType.ALL, orphanRemoval = true)
-    protected Set<Orders> orders = new HashSet<>();
+    @MapKeyColumn(name = "orderid")
+    protected Map<Long, Order> orders = new HashMap<>();
 
-    public Shoes() {
+    public Map<Long, Order> getOrders() {
+        return orders;
     }
 
-    public Shoes(Long shoeid) {
+    public Order getOrder(Long orderid) {
+        return this.orders.get(orderid);
+    }
+
+    public void addOrder(Long orderid, Order order) {
+        this.orders.put(orderid, order);
+    }
+
+    public Shoe() {
+    }
+
+    public Shoe(Long shoeid) {
         this.shoeid = shoeid;
     }
 
-    public Shoes(Long shoeid, String name, String category, Long price) {
+    public Shoe(String name, String category, Long price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+
+    public Shoe(Long shoeid, String name, String category, Long price) {
         this.shoeid = shoeid;
         this.name = name;
         this.category = category;

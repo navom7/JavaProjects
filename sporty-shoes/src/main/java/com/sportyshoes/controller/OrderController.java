@@ -2,15 +2,11 @@ package com.sportyshoes.controller;
 
 import com.sportyshoes.dto.CreateOrderRequestDTO;
 import com.sportyshoes.dto.CreateOrderResponseDTO;
-import com.sportyshoes.entity.Orders;
 import com.sportyshoes.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders")
@@ -28,7 +24,11 @@ public class OrderController {
     public ResponseEntity<CreateOrderResponseDTO> createOrder(@RequestBody CreateOrderRequestDTO order) {
         CreateOrderResponseDTO orderResponse = orderService.createOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
+    }
 
+    @GetMapping("/get/{orderid}")
+    public ResponseEntity<CreateOrderResponseDTO> getOrder(@PathVariable Long orderid) {
+        return orderService.getOrders(orderid);
     }
 
 }

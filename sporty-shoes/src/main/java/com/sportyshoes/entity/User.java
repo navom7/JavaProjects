@@ -2,12 +2,10 @@ package com.sportyshoes.entity;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name = "userdetails")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -27,19 +25,24 @@ public class User {
     @Column(name = "role")
     private int role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    protected Set<Orders> orders = new HashSet<>();
+    @Column(name = "password")
+    private String password;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return getRole() == user.getRole() && Objects.equals(getUserid(), user.getUserid()) && Objects.equals(getName(), user.getName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPhonenumber(), user.getPhonenumber()) && Objects.equals(orders, user.orders);
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @MapKeyColumn(name = "orderid")
+    protected Map<Long, Order> orders = new HashMap<>();
+
+    public Map<Long, Order> getOrders() {
+        return orders;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUserid(), getName(), getEmail(), getPhonenumber(), getRole(), orders);
+    public Order getOrder(Long orderId){
+        return this.orders.get(orderId);
+    }
+
+    public void addOrder(Order order) {
+        order.setUser(this);
+        this.orders.put(order.getOrderid(), order);
     }
 
     public User() {
@@ -49,20 +52,30 @@ public class User {
         this.userid = userid;
     }
 
-    public User(Long userid, String name, String email, String phonenumber, int role) {
+    public User(Long userid, String name, String email, String phonenumber, int role, String password) {
         this.userid = userid;
         this.name = name;
         this.email = email;
         this.phonenumber = phonenumber;
         this.role = role;
+        this.password = password;
     }
 
-    public User(String name, String email, String phonenumber, int role, Set<Orders> orders) {
+    public User(String name, String email, String phonenumber, int role, String password) {
         this.name = name;
         this.email = email;
         this.phonenumber = phonenumber;
         this.role = role;
         this.orders = orders;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getUserid() {
@@ -103,5 +116,18 @@ public class User {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return getRole() == user.getRole() && Objects.equals(getUserid(), user.getUserid()) && Objects.equals(getName(), user.getName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPhonenumber(), user.getPhonenumber()) && Objects.equals(orders, user.orders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserid(), getName(), getEmail(), getPhonenumber(), getRole(), orders);
     }
 }

@@ -2,36 +2,46 @@ package com.sportyshoes.service;
 
 import com.sportyshoes.dto.CreateOrderRequestDTO;
 import com.sportyshoes.dto.CreateOrderResponseDTO;
-import com.sportyshoes.entity.Orders;
-import com.sportyshoes.entity.Shoes;
+import com.sportyshoes.entity.Order;
+import com.sportyshoes.entity.Shoe;
 import com.sportyshoes.entity.User;
 import com.sportyshoes.repository.OrderRepository;
+import com.sportyshoes.repository.ShoeRepository;
+import com.sportyshoes.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
 
+    private final ShoeRepository shoeRepository;
+
+    private final UserRepository userRepository;
+
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, ShoeRepository shoeRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
+        this.shoeRepository = shoeRepository;
+        this.userRepository = userRepository;
     }
 
     public CreateOrderResponseDTO createOrder(CreateOrderRequestDTO orders) {
-        Orders order = new Orders();
-//        order.setOrderid(orders.getOrderid());
-        order.setUser(new User("shakya", "shakya@gmail.com", "88888888", 1, new HashSet<>()));
-        order.setShoes(new Shoes(orders.getShoeid()));
-        order.setUsername(orders.getUsername());
-        order.setShoename(orders.getShoename());
+        Order order = new Order(orders.getUsername(), orders.getShoename());
+        Shoe shoe = new Shoe(orders.getShoeid());
+        User user = new User(orders.getUserid());
+        orderRepository.save(order);
+        shoeRepository.save(shoe);
+        userRepository.save(user);
+        return new CreateOrderResponseDTO("Order Created", true, order, null);
+    }
 
-        Orders createdOrderResponse = orderRepository.save(order);
-
-        return new CreateOrderResponseDTO();
+    public ResponseEntity<CreateOrderResponseDTO>  getOrders(Long orderId) {
+        List<Order> orders = orderRepository.findAll();
+        return ResponseEntity.ok(new CreateOrderResponseDTO("Orders", true, null, orders));
     }
 }

@@ -1,7 +1,7 @@
 package com.sportyshoes.repository;
 
-import com.sportyshoes.entity.Orders;
+import com.sportyshoes.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Orders, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

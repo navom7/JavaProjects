@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Table(name = "orders")
 @Entity
-public class Orders {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,12 +14,12 @@ public class Orders {
     private Long orderid;
 
     @ManyToOne
-    @JoinColumn(name = "userid", updatable = false, nullable = false)
+    @JoinColumn(name = "userid")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "shoeid", updatable = false, nullable = false)
-    private Shoes shoes;
+    @JoinColumn(name = "shoeid")
+    private Shoe shoes;
 
     @Column(name = "username")
     private String username;
@@ -27,8 +27,12 @@ public class Orders {
     @Column(name = "shoename")
     private String shoename;
 
+    public Order(String username, String shoename) {
+        this.username = username;
+        this.shoename = shoename;
+    }
 
-    public Orders(Long orderid, User user, Shoes shoes, String username, String shoename) {
+    public Order(Long orderid, User user, Shoe shoes, String username, String shoename) {
         this.orderid = orderid;
         this.user = user;
         this.shoes = shoes;
@@ -36,13 +40,13 @@ public class Orders {
         this.shoename = shoename;
     }
 
-    public Orders() {
+    public Order() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Orders orders)) return false;
+        if (!(o instanceof Order orders)) return false;
         return Objects.equals(getOrderid(), orders.getOrderid()) && Objects.equals(getUser(), orders.getUser()) && Objects.equals(getShoes(), orders.getShoes()) && Objects.equals(getUsername(), orders.getUsername()) && Objects.equals(getShoename(), orders.getShoename());
     }
 
@@ -55,10 +59,6 @@ public class Orders {
         return orderid;
     }
 
-    public void setOrderid(Long orderid) {
-        this.orderid = orderid;
-    }
-
     public User getUser() {
         return user;
     }
@@ -67,11 +67,11 @@ public class Orders {
         this.user = user;
     }
 
-    public Shoes getShoes() {
+    public Shoe getShoes() {
         return shoes;
     }
 
-    public void setShoes(Shoes shoes) {
+    public void setShoes(Shoe shoes) {
         this.shoes = shoes;
     }
 

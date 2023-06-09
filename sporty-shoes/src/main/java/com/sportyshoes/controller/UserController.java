@@ -1,5 +1,7 @@
 package com.sportyshoes.controller;
 
+import com.sportyshoes.dto.UserRequestDTO;
+import com.sportyshoes.dto.UserResponseDTO;
 import com.sportyshoes.entity.User;
 import com.sportyshoes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +22,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+
+    @PostMapping("/signup")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return userService.createUser(user);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDTO> loginUser(@RequestBody UserRequestDTO user) {
+        return userService.loginUser(user);
     }
+
+    @PostMapping("/fetch")
+    public ResponseEntity<UserResponseDTO> fetchUsers(@RequestBody User user) {
+        return userService.getAllUsers(user);
+    }
+
+
 }
