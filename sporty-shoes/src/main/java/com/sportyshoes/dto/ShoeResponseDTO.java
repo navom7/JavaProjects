@@ -1,36 +1,35 @@
 package com.sportyshoes.dto;
 
-import com.sportyshoes.entity.Shoe;
 import com.sportyshoes.utils.BaseResponse;
 
 import java.util.List;
 
 public class ShoeResponseDTO extends BaseResponse {
-    private Shoe shoe;
-    private List<Shoe> shoes;
+    private ShoeDTO ShoeDTO;
+    private List<ShoeDTO> ShoeDTOs;
 
-    public ShoeResponseDTO(Shoe Shoe, List<Shoe> Shoes, String message, boolean isSuccess) {
+    public ShoeResponseDTO(ShoeDTO ShoeDTO, List<ShoeDTO> ShoeDTOs, String message, boolean isSuccess) {
         super(message, isSuccess);
-        this.shoe = Shoe;
-        this.shoes = Shoes;
+        this.ShoeDTO = ShoeDTO;
+        this.ShoeDTOs = ShoeDTOs;
     }
 
     public ShoeResponseDTO() {
     }
 
-    public List<Shoe> getShoes() {
-        return shoes;
+    public List<ShoeDTO> getShoeDTOs() {
+        return ShoeDTOs;
     }
 
-    public void setShoes(List<Shoe> shoes) {
-        this.shoes = shoes;
+    public void setShoeDTOs(List<ShoeDTO> ShoeDTOs) {
+        this.ShoeDTOs = ShoeDTOs;
     }
 
-    public Shoe getShoe() {
-        return shoe;
+    public ShoeDTO getShoeDTO() {
+        return ShoeDTO;
     }
-    public void setShoe(Shoe shoe) {
-        this.shoe = shoe;
+    public void setShoeDTO(ShoeDTO ShoeDTO) {
+        this.ShoeDTO = ShoeDTO;
     }
 
 }

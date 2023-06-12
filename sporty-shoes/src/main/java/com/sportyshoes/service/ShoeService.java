@@ -1,5 +1,6 @@
 package com.sportyshoes.service;
 
+import com.sportyshoes.dto.ShoeDTO;
 import com.sportyshoes.dto.ShoeRequestDTO;
 import com.sportyshoes.dto.ShoeResponseDTO;
 import com.sportyshoes.entity.Shoe;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.sportyshoes.constants.AppConstants.INVALID_PASSWORD;
@@ -28,7 +30,8 @@ public class ShoeService {
     }
 
     public ResponseEntity<ShoeResponseDTO> getAllShoes() {
-        List<Shoe> shoes = shoeRepository.findAll();
+        List<Shoe> shoesResponse = shoeRepository.findAll();
+        List<ShoeDTO> shoes = shoesResponse.stream()
         return ResponseEntity.ok(new ShoeResponseDTO(null, shoes, "Shoes found", true));
     }
 

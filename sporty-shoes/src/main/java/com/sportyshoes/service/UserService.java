@@ -5,6 +5,7 @@ import com.sportyshoes.dto.UserResponseDTO;
 import com.sportyshoes.entity.User;
 import com.sportyshoes.repository.UserRepository;
 import com.sportyshoes.utils.BaseResponse;
+import com.sportyshoes.utils.RedisUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.sportyshoes.constants.AppConstants.INVALID_PASSWORD;
 import static com.sportyshoes.constants.AppConstants.LOGIN_SUCCESS;
@@ -21,9 +23,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final RedisUtility redisUtility;
+
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RedisUtility redisUtility) {
         this.userRepository = userRepository;
+        this.redisUtility = redisUtility;
     }
 
     public ResponseEntity<UserResponseDTO> getAllUsers(User user) {
@@ -42,9 +47,14 @@ public class UserService {
             return ResponseEntity.notFound().build();
         }
         if(findUser.getPassword().equals(user.getPassword())){
+            String sessionId = UUID.randomUUID().toString();
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("sessionId", sessionId);
             ResponseEntity<UserResponseDTO> finalResponse = ResponseEntity
-                    .ok(new UserResponseDTO(findUser, null, LOGIN_SUCCESS, true));
-            finalResponse.getHeaders().set("sessionId", "abcdefghijklmn");
+                    .status(HttpStatus.OK)
+                    .headers(headers)
+                    .body(new UserResponseDTO(findUser, null, LOGIN_SUCCESS, true));
+            redisUtility.setValue(sessionId, findUser);
             return finalResponse;
         } else {
             return ResponseEntity
