@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.sportyshoes.constants.AppConstants.INVALID_PASSWORD;
 import static com.sportyshoes.constants.AppConstants.LOGIN_SUCCESS;
@@ -32,6 +33,10 @@ public class ShoeService {
     public ResponseEntity<ShoeResponseDTO> getAllShoes() {
         List<Shoe> shoesResponse = shoeRepository.findAll();
         List<ShoeDTO> shoes = shoesResponse.stream()
+                .map(shoe -> {
+                    return new ShoeDTO(shoe.getShoeid(), shoe.getName(), shoe.getCategory(), shoe.getPrice());
+                })
+                .collect(Collectors.toList());
         return ResponseEntity.ok(new ShoeResponseDTO(null, shoes, "Shoes found", true));
     }
 
