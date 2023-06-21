@@ -31,7 +31,11 @@ public class UserService {
         this.redisUtility = redisUtility;
     }
 
-    public ResponseEntity<UserResponseDTO> getAllUsers(User user) {
+    public ResponseEntity<UserResponseDTO> getAllUsers(User user, String sessionId) {
+        User session = (User) redisUtility.getValue(sessionId);
+        if(session == null || session.getRole() != 1) {
+            return ResponseEntity.notFound().build();
+        }
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(new UserResponseDTO(null, users, "Users found", true));
     }

@@ -4,9 +4,11 @@ import com.sportyshoes.dto.ShoeDTO;
 import com.sportyshoes.dto.ShoeRequestDTO;
 import com.sportyshoes.dto.ShoeResponseDTO;
 import com.sportyshoes.entity.Shoe;
+import com.sportyshoes.entity.User;
 import com.sportyshoes.repository.ShoeRepository;
 import com.sportyshoes.repository.ShoeRepository;
 import com.sportyshoes.utils.BaseResponse;
+import com.sportyshoes.utils.RedisUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,12 +27,17 @@ public class ShoeService {
 
     private final ShoeRepository shoeRepository;
 
+    private final RedisUtility redisUtility;
+
     @Autowired
-    public ShoeService(ShoeRepository shoeRepository) {
+    public ShoeService(ShoeRepository shoeRepository, RedisUtility redisUtility) {
         this.shoeRepository = shoeRepository;
+        this.redisUtility = redisUtility;
     }
 
-    public ResponseEntity<ShoeResponseDTO> getAllShoes() {
+    public ResponseEntity<ShoeResponseDTO> getAllShoes(Long userId, String sessionId) {
+        User session = (User) redisUtility.getValue(sessionId);
+
         List<Shoe> shoesResponse = shoeRepository.findAll();
         List<ShoeDTO> shoes = shoesResponse.stream()
                 .map(shoe -> {
@@ -40,7 +47,11 @@ public class ShoeService {
         return ResponseEntity.ok(new ShoeResponseDTO(null, shoes, "Shoes found", true));
     }
 
-    public ResponseEntity<Shoe> createShoe(Shoe Shoe){
+    public ResponseEntity<Shoe> createShoe(Shoe Shoe, String sessionId){
+        User session = (User) redisUtility.getValue(sessionId);
+        if(session == null || session.getRole() != 1) {
+            return ResponseEntity.badRequest().build();
+        }
         Shoe createdShoe = shoeRepository.save(Shoe);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdShoe);
     }
