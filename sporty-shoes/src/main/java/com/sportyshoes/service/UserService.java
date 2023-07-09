@@ -4,7 +4,6 @@ import com.sportyshoes.dto.UserRequestDTO;
 import com.sportyshoes.dto.UserResponseDTO;
 import com.sportyshoes.entity.User;
 import com.sportyshoes.repository.UserRepository;
-import com.sportyshoes.utils.BaseResponse;
 import com.sportyshoes.utils.RedisUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +41,10 @@ public class UserService {
 
     public ResponseEntity<User> createUser(User user){
         User createdUser = userRepository.save(user);
+        UserRequestDTO response = new UserRequestDTO(createdUser.getUserid(),
+                createdUser.getName(),
+                createdUser.getEmail(),
+                createdUser.getPassword());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 

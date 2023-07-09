@@ -9,10 +9,11 @@ public class UserRequestDTO {
     public UserRequestDTO() {
     }
 
-    public UserRequestDTO(Long userId, String username, String email) {
+    public UserRequestDTO(Long userId, String username, String email, String password) {
         this.userId = userId;
         this.username = username;
         this.email = email;
+        this.password = password;
     }
 
     public Long getUserId() {
