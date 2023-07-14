@@ -41,13 +41,7 @@ public class RedisConfig {
                 new RedisStandaloneConfiguration(REDIS_HOST, REDIS_PORT);
         configuration.setPassword("nanhe");
 
-        JedisClientConfiguration jedisClientConfiguration =
-                JedisClientConfiguration.builder()
-                        .build();
-
-        JedisConnectionFactory factory = new JedisConnectionFactory(
-                configuration, jedisClientConfiguration);
-
+        JedisConnectionFactory factory = new JedisConnectionFactory(configuration);
         factory.afterPropertiesSet();
         redisTemplate.setConnectionFactory(factory);
         return redisTemplate;

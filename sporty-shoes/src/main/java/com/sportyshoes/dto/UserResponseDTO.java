@@ -6,22 +6,21 @@ import com.sportyshoes.utils.BaseResponse;
 import java.util.List;
 
 public class UserResponseDTO extends BaseResponse {
-    private User user;
-    private List<User> users;
-
-    public UserResponseDTO(User user, List<User> users, String message, boolean isSuccess) {
-        super(message, isSuccess);
-        this.user = user;
-        this.users = users;
-    }
+    private List<UserDTO> users;
 
     public UserResponseDTO() {
     }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
+
+    public UserResponseDTO(String message, boolean isSuccess, List<UserDTO> users) {
+        super(message, isSuccess);
+        this.users = users;
     }
 
+    public List<UserDTO> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserDTO> users) {
+        this.users = users;
+    }
 }

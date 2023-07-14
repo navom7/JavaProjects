@@ -36,7 +36,7 @@ public class ShoeService {
     }
 
     public ResponseEntity<ShoeResponseDTO> getAllShoes(Long userId, String sessionId) {
-        User session = (User) redisUtility.getValue(sessionId);
+//        User session = (User) redisUtility.getValue(sessionId);
 
         List<Shoe> shoesResponse = shoeRepository.findAll();
         List<ShoeDTO> shoes = shoesResponse.stream()
@@ -48,10 +48,10 @@ public class ShoeService {
     }
 
     public ResponseEntity<Shoe> createShoe(Shoe Shoe, String sessionId){
-        User session = (User) redisUtility.getValue(sessionId);
-        if(session == null || session.getRole() != 1) {
-            return ResponseEntity.badRequest().build();
-        }
+//        User session = (User) redisUtility.getValue(sessionId);
+//        if(session == null || session.getRole() != 1) {
+//            return ResponseEntity.badRequest().build();
+//        }
         Shoe createdShoe = shoeRepository.save(Shoe);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdShoe);
     }

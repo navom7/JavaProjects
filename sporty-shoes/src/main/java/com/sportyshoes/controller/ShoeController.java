@@ -25,7 +25,7 @@ public class ShoeController {
         return ShoeService.createShoe(Shoe, sessionId);
     }
 
-    @GetMapping("/fetchUsers/{userId}")
+    @GetMapping("/fetch/{userId}")
     public ResponseEntity<ShoeResponseDTO> fetchShoes(@RequestHeader Long userId, @RequestHeader String sessionId) throws Exception {
         ResponseEntity<ShoeResponseDTO> response = ShoeService.getAllShoes(userId, sessionId);
         return response;
