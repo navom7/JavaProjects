@@ -26,9 +26,9 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
     }
 
-    @GetMapping("/get/{orderid}")
-    public ResponseEntity<CreateOrderResponseDTO> getOrder(@PathVariable Long orderid) {
-        return orderService.getOrders(orderid);
+    @GetMapping("/fetch")
+    public ResponseEntity<CreateOrderResponseDTO> getOrder() {
+        return orderService.getOrders();
     }
 
 }

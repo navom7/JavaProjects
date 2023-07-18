@@ -40,7 +40,7 @@ public class OrderService {
         return new CreateOrderResponseDTO("Order Created", true, order, null);
     }
 
-    public ResponseEntity<CreateOrderResponseDTO>  getOrders(Long orderId) {
+    public ResponseEntity<CreateOrderResponseDTO>  getOrders() {
         List<Order> orders = orderRepository.findAll();
         return ResponseEntity.ok(new CreateOrderResponseDTO("Orders", true, null, orders));
     }

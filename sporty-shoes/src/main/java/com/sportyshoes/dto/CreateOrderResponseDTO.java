@@ -10,6 +10,12 @@ public class CreateOrderResponseDTO extends BaseResponse {
     private List<Order> orders;
 
     public CreateOrderResponseDTO() {}
+
+    public CreateOrderResponseDTO(Order order, List<Order> orders) {
+        this.order = order;
+        this.orders = orders;
+    }
+
     public CreateOrderResponseDTO(String message, boolean isSuccess, Order order, List<Order> orders) {
         super(message, isSuccess);
         this.order = order;
@@ -19,8 +25,16 @@ public class CreateOrderResponseDTO extends BaseResponse {
     public Order getOrder() {
         return order;
     }
+
     public void setOrder(Order order) {
         this.order = order;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }

@@ -21,13 +21,13 @@ public class ShoeController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Shoe> createShoe(@RequestBody Shoe Shoe, @RequestHeader String sessionId) {
-        return ShoeService.createShoe(Shoe, sessionId);
+    public ResponseEntity<Shoe> createShoe(@RequestBody Shoe Shoe) {
+        return ShoeService.createShoe(Shoe);
     }
 
-    @GetMapping("/fetch/{userId}")
-    public ResponseEntity<ShoeResponseDTO> fetchShoes(@RequestHeader Long userId, @RequestHeader String sessionId) throws Exception {
-        ResponseEntity<ShoeResponseDTO> response = ShoeService.getAllShoes(userId, sessionId);
+    @GetMapping("/fetch")
+    public ResponseEntity<ShoeResponseDTO> fetchShoes(@RequestHeader Long userId) throws Exception {
+        ResponseEntity<ShoeResponseDTO> response = ShoeService.getAllShoes(userId);
         return response;
     }
 

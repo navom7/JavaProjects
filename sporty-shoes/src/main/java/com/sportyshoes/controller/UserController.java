@@ -34,8 +34,8 @@ public class UserController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<UserResponseDTO> fetchUsers(@RequestBody User user, @RequestHeader String sessionId) {
-        return userService.getAllUsers(user, sessionId);
+    public ResponseEntity<UserResponseDTO> fetchUsers(@RequestBody User user) {
+        return userService.getAllUsers(user);
     }
 
 

@@ -7,6 +7,7 @@ import com.sportyshoes.dto.UserResponseDTO;
 import com.sportyshoes.entity.User;
 import com.sportyshoes.repository.UserRepository;
 import com.sportyshoes.utils.RedisUtility;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,11 +35,7 @@ public class UserService {
         this.redisUtility = redisUtility;
     }
 
-    public ResponseEntity<UserResponseDTO> getAllUsers(User userDO, String sessionId) {
-//        User session = (User) redisUtility.getValue(sessionId);
-//        if(session == null || session.getRole() != 1) {
-//            return ResponseEntity.notFound().build();
-//        }
+    public ResponseEntity<UserResponseDTO> getAllUsers(User userDO) {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOs = users.stream()
                 .map(userDTO -> {
@@ -73,16 +70,21 @@ public class UserService {
         if(usersFromDB == null || usersFromDB.size() == 0){
             return ResponseEntity.notFound().build();
         }
+        ModelMapper modelMapper = new ModelMapper();
+
         User findUser = usersFromDB.get(1);
+        UserDTO userDTO = modelMapper.map(findUser, UserDTO.class);
         if(findUser.getPassword().equals(user.getPassword())){
             String sessionId = UUID.randomUUID().toString();
             HttpHeaders headers = new HttpHeaders();
             headers.set("sessionId", sessionId);
-            List<UserDTO> userDTOS = usersFromDB.stream()
-                    .map(x -> {
-                        return new UserDTO(x.getUserid(), x.getName(), x.getEmail(), x.getPhonenumber(), x.getRole());
-                    })
-                    .collect(Collectors.toList());
+            List<UserDTO> userDTOS = new ArrayList<>();
+            userDTOS.add(userDTO);
+//                    usersFromDB.stream()
+//                    .map(x -> {
+//                        return new UserDTO(x.getUserid(), x.getName(), x.getEmail(), x.getPhonenumber(), x.getRole());
+//                    })
+//                    .collect(Collectors.toList());
             ResponseEntity<UserResponseDTO> finalResponse = ResponseEntity
                     .status(HttpStatus.OK)
                     .headers(headers)

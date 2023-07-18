@@ -35,7 +35,7 @@ public class ShoeService {
         this.redisUtility = redisUtility;
     }
 
-    public ResponseEntity<ShoeResponseDTO> getAllShoes(Long userId, String sessionId) {
+    public ResponseEntity<ShoeResponseDTO> getAllShoes(Long userId) {
 //        User session = (User) redisUtility.getValue(sessionId);
 
         List<Shoe> shoesResponse = shoeRepository.findAll();
@@ -47,7 +47,7 @@ public class ShoeService {
         return ResponseEntity.ok(new ShoeResponseDTO(null, shoes, "Shoes found", true));
     }
 
-    public ResponseEntity<Shoe> createShoe(Shoe Shoe, String sessionId){
+    public ResponseEntity<Shoe> createShoe(Shoe Shoe){
 //        User session = (User) redisUtility.getValue(sessionId);
 //        if(session == null || session.getRole() != 1) {
 //            return ResponseEntity.badRequest().build();
